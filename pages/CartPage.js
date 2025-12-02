@@ -1,3 +1,5 @@
+// Why are you using waitFor method if the website is very simple and playwright auto-wait mechanism can handle this automatically
+
 export class CartPage {
   // 🏷️ Locators and URLs
   checkoutButton = '[data-test="checkout"]';

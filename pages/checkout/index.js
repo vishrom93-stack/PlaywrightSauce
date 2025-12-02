@@ -1,3 +1,5 @@
+// You don't need export barrel here. its redundant, and doesn't really serves any purpose.
+
 // 📦 Re-export all checkout pages
 export * from "./CheckoutStepOnePage.js";      
 export * from "./CheckoutStepTwoPage.js";      
