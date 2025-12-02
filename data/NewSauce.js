@@ -5,7 +5,7 @@ import { CombinedRejectedSauce } from "../helpers/RejectedCombine.js";
 import { LoginPage } from "../pages/LoginPage.js";
 import { InventoryPage } from "../pages/InventoryPage.js";
 import { CartPage } from "../pages/CartPage.js";
-import { RejectedAttempts } from "../helpers/RejectedAttempts.js";  
+import { RejectedAttempts } from "../helpers/RejectedAttempts.js";
 
 // ------------------------------------
 
@@ -15,7 +15,7 @@ export class NewSauce {
     this.accepted = new AcceptedSauce();
     this.rejected = new RejectedSauce();
     this.combined = new CombinedRejectedSauce();
-    this.rejectedAttempts=new RejectedAttempts();
+    this.rejectedAttempts = new RejectedAttempts();
 
     // 🧭 Page instances (ready to use)
     this.login = new LoginPage(page);
@@ -30,6 +30,7 @@ export class NewSauce {
     };
   }
 
+  // 🧪 Data getters
   getAcceptedSauce() {
     return this.accepted;
   }
@@ -39,9 +40,11 @@ export class NewSauce {
   getCombinedRejectedSauce() {
     return this.combined;
   }
-  getRejectedAttempts(){
+  getRejectedAttempts() {
     return this.rejectedAttempts;
   }
+
+  // 📄 Page getters
   getLoginPage() {
     return this.login;
   }
@@ -51,6 +54,8 @@ export class NewSauce {
   getCartPage() {
     return this.cart;
   }
+
+  // 🛒 Checkout getters
   getStepOnePage() {
     return this.checkout.step1;
   }
