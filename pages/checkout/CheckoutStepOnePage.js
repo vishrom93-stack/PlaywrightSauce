@@ -1,3 +1,5 @@
+import { AcceptedSauce } from "../../data/AcceptedSauce.js";
+
 export class CheckoutStepOnePage {
   // 🏷️ Locators for Step One fields
   titleLocator = '[data-test="title"]';
@@ -16,7 +18,7 @@ export class CheckoutStepOnePage {
   // 🧭 Open Checkout: Step One page
   // Used ONLY when navigating directly (not during flow)
   async openCheckoutStepOnePage() {
-    await this.page.goto("https://www.saucedemo.com/checkout-step-one.html");
+    await this.page.goto(new AcceptedSauce().step1Url);
 
     // ⏳ WAIT ONLY — no expect inside POM classes
     // (expect belongs in test files or Positive helpers)

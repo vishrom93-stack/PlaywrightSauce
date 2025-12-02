@@ -3,16 +3,14 @@ export class LoginPage {
   userPasswordField = '[data-test="password"]';
   loginButton = '[data-test="login-button"]';
   titleLocator = '[data-test="title"]';
+  url = "https://www.saucedemo.com/";
 
   constructor(page) {
     this.page = page;
   }
 
   async openLoginPage() {
-    await this.page.goto("https://www.saucedemo.com/");
-    await this.page.locator(this.usernameField);
-    await this.page.locator(this.userPasswordField);
-    await this.page.locator(this.loginButton);
+    await this.page.goto(this.url);
   }
 
   async login(username, password) {
@@ -20,5 +18,4 @@ export class LoginPage {
     await this.page.locator(this.userPasswordField).fill(password);
     await this.page.locator(this.loginButton).click();
   }
-  
 }

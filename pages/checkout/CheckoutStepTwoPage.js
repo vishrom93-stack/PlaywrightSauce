@@ -1,3 +1,4 @@
+import { AcceptedSauce } from "../../data/AcceptedSauce";
 export class CheckoutStepTwoPage {
   // 🏷️ Locators for Step Two review page
   titleLocator = '[data-test="title"]';
@@ -12,7 +13,7 @@ export class CheckoutStepTwoPage {
 
   // 🧭 Open Checkout Step Two page
   async openCheckoutStepTwoPage() {
-    await this.page.goto("https://www.saucedemo.com/checkout-step-two.html");
+    await this.page.goto(new AcceptedSauce().step2Url);
 
     // ⏳ Wait for required elements on THIS page
     await this.page.locator(this.titleLocator).waitFor();
