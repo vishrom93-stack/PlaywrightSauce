@@ -1,3 +1,6 @@
+// you dont need to do import alias and export barrel - check index.js in pages/checkout/ for more details.
+
+// In general - when you will transfer all data classes to a simple javascript object this class will be redundant.
 import * as Checkout from "../pages/checkout/index.js";
 import { AcceptedSauce } from "../data/AcceptedSauce.js";
 import { RejectedSauce } from "../data/RejectedSauce.js";

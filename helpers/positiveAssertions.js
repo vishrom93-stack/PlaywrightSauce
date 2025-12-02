@@ -3,6 +3,9 @@ import { AcceptedSauce } from "../data/AcceptedSauce.js";
 
 const acceptedSauce = new AcceptedSauce();
 
+
+// The whole functions needed to be in their related Page Object Model classes.
+
 // 1️⃣ Positive Login
 export async function expectPositiveLogin(page, loginPage) {
   await expect(page).toHaveURL(acceptedSauce.inventoryUrl);

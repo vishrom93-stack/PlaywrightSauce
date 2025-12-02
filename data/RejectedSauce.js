@@ -1,5 +1,7 @@
 import { AcceptedSauce } from "./AcceptedSauce.js";
 
+
+// The AcceptedSauce.js file feedback is the same as here
 export class RejectedSauce {
   lockedOutUser = {
     username: "locked_out_user",
