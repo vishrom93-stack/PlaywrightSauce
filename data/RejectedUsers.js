@@ -1,13 +1,13 @@
-import { AcceptedSauce } from "./AcceptedSauce.js";
+import { AcceptedUsers } from "./AcceptedUsers.js";
 
-export class RejectedSauce {
+export class RejectedUsers {
   lockedOutUser = {
     username: "locked_out_user",
-    password: new AcceptedSauce().getPassword(),
+    password: new AcceptedUsers().getPassword(),
   };
   errorLocator = '[data-test="error"]';
 
-  //🔒 valid user which is locked an cannot login
+  //🔒 valid user which is locked and cannot login
   LockedOutUser() {
     return "Epic sadface: Sorry, this user has been locked out.";
   }

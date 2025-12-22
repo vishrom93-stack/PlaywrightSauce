@@ -1,4 +1,4 @@
-import { AcceptedSauce } from "../../data/AcceptedSauce.js";
+import { urls } from "../data/Urls.js";
 
 export class CheckoutStepOnePage {
   // 🏷️ Locators for Step One fields
@@ -11,19 +11,11 @@ export class CheckoutStepOnePage {
   constructor(page) {
     this.page = page;
 
-    // 📄 Expected title for this page
+ 
     this.titleText = "Checkout: Your Information";
   }
-
-  // 🧭 Open Checkout: Step One page
-  // Used ONLY when navigating directly (not during flow)
   async openCheckoutStepOnePage() {
-    await this.page.goto(new AcceptedSauce().step1Url);
-
-    // ⏳ WAIT ONLY — no expect inside POM classes
-    // (expect belongs in test files or Positive helpers)
-    await this.page.locator(this.titleLocator).waitFor();
-    await this.page.locator(this.firstName).waitFor();
+    await this.page.goto(urls.step1Url);
   }
 
   // ✍️ Fill out the Step One form

@@ -1,30 +1,30 @@
-import { RejectedSauce } from "../data/RejectedSauce.js";
+import { RejectedUsers } from "../data/RejectedUsers.js";
 
 export class RejectedAttempts {
   constructor() {
-    this.rejectedSauce = new RejectedSauce();
+    this.rejectedUsers = new RejectedUsers();
   }
 
   WrongLoginStatus(username, password) {
     // 🔐 Locked-out user
     if (
-      username === this.rejectedSauce.lockedOutUser.username &&
-      password === this.rejectedSauce.lockedOutUser.password
+      username === this.rejectedUsers.lockedOutUser.username &&
+      password === this.rejectedUsers.lockedOutUser.password
     ) {
-      return this.rejectedSauce.LockedOutUser();
+      return this.rejectedUsers.LockedOutUser();
     }
 
     // ❌ Empty username
     if (!username) {
-      return this.rejectedSauce.EmptyUsername();
+      return this.rejectedUsers.EmptyUsername();
     }
 
     // ❌ Empty password
     if (!password) {
-      return this.rejectedSauce.EmptyPassword();
+      return this.rejectedUsers.EmptyPassword();
     }
 
     // ❌ Wrong credentials
-    return this.rejectedSauce.WrongUser();
+    return this.rejectedUsers.WrongUser();
   }
 }

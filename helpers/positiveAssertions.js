@@ -1,13 +1,14 @@
 import { expect } from "@playwright/test";
-import { AcceptedSauce } from "../data/AcceptedSauce.js";
+import { InventoryPage } from "../pages/InventoryPage.js";
+import { urls } from "../data/Urls.js";
 
-const acceptedSauce = new AcceptedSauce();
+const inventory = new InventoryPage();
 
 // 1️⃣ Positive Login
 export async function expectPositiveLogin(page, loginPage) {
-  await expect(page).toHaveURL(acceptedSauce.inventoryUrl);
-  await expect(page.locator(loginPage.titleLocator)).toHaveText(
-    acceptedSauce.getTitle()
+  await expect(page).toHaveURL(urls.inventoryUrl);
+  await expect(page.locator(inventory.titleLocator)).toHaveText(
+    inventory.titleText
   );
 }
 
@@ -25,7 +26,7 @@ export async function productsToAddInventory(page, inventoryPage, products) {
 // 3️⃣ Navigate to Cart Page
 export async function goToCartPage(page, cartPage) {
   await cartPage.openCartPage();
-  await expect(page).toHaveURL(acceptedSauce.cartUrl);
+  await expect(page).toHaveURL(urls.cartUrl);
   await expect(page.locator(cartPage.titleLocator)).toHaveText(
     cartPage.titleText
   );
@@ -36,7 +37,7 @@ export async function goToCartPage(page, cartPage) {
 // 4️⃣ Step One Form
 export async function checkOutStepOne(page, stepOnePage, first, last, postal) {
   await stepOnePage.openCheckoutStepOnePage();
-  await expect(page).toHaveURL(acceptedSauce.step1Url);
+  await expect(page).toHaveURL(urls.step1Url);
   await expect(page.locator(stepOnePage.titleLocator)).toHaveText(
     stepOnePage.titleText
   );
@@ -47,7 +48,7 @@ export async function checkOutStepOne(page, stepOnePage, first, last, postal) {
 
 // 5️⃣ Step Two
 export async function checkOutStepTwo(page, stepTwoPage) {
-  await expect(page).toHaveURL(acceptedSauce.step2Url);
+  await expect(page).toHaveURL(urls.step2Url);
   await expect(page.locator(stepTwoPage.titleLocator)).toHaveText(
     stepTwoPage.titleText
   );
@@ -57,7 +58,7 @@ export async function checkOutStepTwo(page, stepTwoPage) {
 
 // 6️⃣ Complete Page
 export async function checkOutComplete(page, completePage) {
-  await expect(page).toHaveURL(acceptedSauce.completeUrl);
+  await expect(page).toHaveURL(urls.completeUrl);
 
   await expect(page.locator(completePage.titleLocator)).toHaveText(
     completePage.titleText

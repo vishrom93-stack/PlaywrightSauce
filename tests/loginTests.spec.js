@@ -1,56 +1,77 @@
-// ===================================================================
-// 🌶️ NEGATIVE LOGIN DATA SETUP — Shared for ALL tests
-// ===================================================================
 import { test, expect } from "@playwright/test";
-import { NewSauce } from "../data/NewSauce.js";
+import { LoginPage } from "../pages/LoginPage.js";
+import { AcceptedUsers } from "../data/AcceptedUsers.js";
+import { RejectedUsers } from "../data/RejectedUsers.js";
+import { InvalidLoginInput } from "../helpers/InvalidLoginInput.js";
+import { RejectedAttempts } from "../helpers/RejectedAttempts.js";
+import { expectPositiveLogin } from "../helpers/positiveAssertions.js";
 
-const dataSauce = new NewSauce(); // 🎒 Master data hub
-const combined = dataSauce.getCombinedRejectedSauce(); // 🔗 Combined invalid sets
+const acceptedUsers = new AcceptedUsers();
+const rejectedUsers = new RejectedUsers();
+const invalidLoginInput = new InvalidLoginInput();
 
-const arrayOfUsernames = combined.arrayOfRejectedUsernames; // 🧪 All test usernames
-const arrayOfPasswords = combined.arrayOfRejectedPasswords; // 🔐 All test passwords
-
-const lockedOutUser = dataSauce.getRejectedSauce().lockedOutUser; // 🚫 Locked-out case
-const rejectedAttempts = dataSauce.getRejectedAttempts(); // 🧠 Error logic engine
-const rejectedSauce = dataSauce.getRejectedSauce(); // ⚠️ Error locators + rules
-
-test.describe("🔏 Negative Login Tests", () => {
+test.describe("🌟 Positive(Valid) Login Tests 🔐", () => {
   test.beforeEach(async ({ page }) => {
-    page.newSauce = new NewSauce(page); // Creates NewSauce WITH PAGE for browser actions 🧪
-    await page.newSauce.getLoginPage().openLoginPage(); // Opens login page 📃
+    page.loginPage = new LoginPage(page);
+    await page.loginPage.openLoginPage();
   });
-  // 🔒 Special locked-out user case
-  test("🔒 Locked Out User", async ({ page }) => {
+  let validUsers = acceptedUsers.users;
+  const standardUser = validUsers.shift();
+  test(`🔓😀 Standard login test with ${standardUser.username}`, async ({
+    page,
+  }) => {
+    await page.loginPage.login(standardUser.username, standardUser.password);
+    await expectPositiveLogin(page, page.loginPage);
+  });
+  validUsers.forEach((user) => {
+    test(`🙂🔓 Login test for user: ${user.username}`, async ({ page }) => {
+      await page.loginPage.login(user.username, user.password);
+      await expectPositiveLogin(page, page.loginPage);
+    });
+  });
+});
+
+test.describe("🔏 Negative(Invalid) Login Tests 🚫", () => {
+  const rejectedAttempts = new RejectedAttempts();
+
+  test.beforeEach(async ({ page }) => {
+    page.loginPage = new LoginPage(page);
+    await page.loginPage.openLoginPage();
+  });
+
+  test("🔒☹️ Locked Out User", async ({ page }) => {
+    const { username, password } = rejectedUsers.lockedOutUser;
+
     const expectedMessage = rejectedAttempts.WrongLoginStatus(
-      lockedOutUser.username,
-      lockedOutUser.password
+      username,
+      password
     );
-    // Use LoginPage from NewSauce 🧪
-    await page.newSauce
-      .getLoginPage()
-      .login(lockedOutUser.username, lockedOutUser.password);
-    // Assertion ⚖️
-    await expect(page.locator(rejectedSauce.errorLocator)).toHaveText(
+
+    await page.loginPage.login(username, password);
+
+    await expect(page.locator(rejectedUsers.errorLocator)).toHaveText(
       expectedMessage
     );
   });
+
   // ⭐ FULL CROSS MATRIX: username × password
-  arrayOfUsernames.forEach((username) => {
-    arrayOfPasswords.forEach((password) => {
-      const usernameDisplay = username === "" ? '"" (empty)' : `"${username}"`;
-      const passwordDisplay = password === "" ? '"" (empty)' : `"${password}"`;
-      test(`☹️ Negative login: username=${usernameDisplay} | password=${passwordDisplay}`, async ({
+  invalidLoginInput.invalidUsernames.forEach((username, i) => {
+    invalidLoginInput.invalidPasswords.forEach((password, j) => {
+      if (i === 0 && j === 0) return;
+      const usernameDisplay = username === "" ? '"" (empty)' : `${username}`;
+      const passwordDisplay = password === "" ? '""(empty)' : `${password}`;
+      test(`⛔️☹️ Rejected login: username= ${usernameDisplay} | password= ${passwordDisplay}`, async ({
         page,
       }) => {
-        await page.newSauce.getLoginPage().login(username, password);
+        await page.loginPage.login(username, password);
 
-        const expectedError = rejectedAttempts.WrongLoginStatus(
+        const expectedMessage = rejectedAttempts.WrongLoginStatus(
           username,
           password
         );
-        // Assertion ⚖️
-        await expect(page.locator(rejectedSauce.errorLocator)).toHaveText(
-          expectedError
+
+        await expect(page.locator(rejectedUsers.errorLocator)).toHaveText(
+          expectedMessage
         );
       });
     });

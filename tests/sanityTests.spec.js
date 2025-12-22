@@ -1,8 +1,16 @@
 import { test } from "@playwright/test";
-import { NewSauce } from "../data/NewSauce.js";
+
+import { LoginPage } from "../pages/LoginPage.js";
+import { InventoryPage } from "../pages/InventoryPage.js";
+import { CartPage } from "../pages/CartPage.js";
+import { CheckoutStepOnePage } from "../pages/CheckoutStepOnePage.js";
+import { CheckoutStepTwoPage } from "../pages/CheckoutStepTwoPage.js";
+import { CheckoutCompletePage } from "../pages/CheckoutCompletePage.js";
+
+import { AcceptedUsers } from "../data/AcceptedUsers.js";
+
 import * as Positive from "../helpers/positiveAssertions.js";
 
-// 🧍 Test Data
 const firstName = "Romi";
 const lastName = "Tester";
 const postalCode = "12345";
@@ -10,135 +18,43 @@ const postalCode = "12345";
 // 🛒 Products to add across ALL tests
 const productsToAdd = ["Sauce Labs Backpack", "Sauce Labs Bike Light"];
 
-test.describe(" 📝 Sanity Login Tests", () => {
+const acceptedUsers = new AcceptedUsers();
+
+test.describe("📝 Sanity Login Tests", () => {
   test.beforeEach(async ({ page }) => {
-    // 🧪 Create NewSauce instance for THIS test
-    page.newSauce = new NewSauce(page);
-
-    // 🗒️ Always start at login page
-    await page.newSauce.getLoginPage().openLoginPage();
+    const loginPage = new LoginPage(page);
+    await loginPage.openLoginPage();
   });
 
-  // -------- 🖲️ INVENTORY TEST ----------
-  test(" 🖲️ Inventory", async ({ page }) => {
-    const standardUser = page.newSauce.getAcceptedSauce().users[0];
+  // -------- ⓺ six steps-pages test ⓺----------
+  test("🔚🏁 End to end Test: From valid login to Checkout Complete 🛒🎬 ", async ({
+    page,
+  }) => {
+    const loginPage = new LoginPage(page);
+    const inventoryPage = new InventoryPage(page);
+    const cartPage = new CartPage(page);
+    const stepOnePage = new CheckoutStepOnePage(page);
+    const stepTwoPage = new CheckoutStepTwoPage(page);
+    const completePage = new CheckoutCompletePage(page);
 
-    await page.newSauce
-      .getLoginPage()
-      .login(standardUser.username, standardUser.password);
+    const standardUser = acceptedUsers.users[0];
 
-    await Positive.expectPositiveLogin(page, page.newSauce.getLoginPage());
+    await loginPage.login(standardUser.username, standardUser.password);
+    await Positive.expectPositiveLogin(page, loginPage);
 
-    await Positive.productsToAddInventory(
-      page,
-      page.newSauce.getInventoryPage(),
-      productsToAdd
-    );
-  });
-
-  // -------- 🛒 CART PAGE TEST ----------
-  test(" 🛒 Go to Cart Page", async ({ page }) => {
-    const standardUser = page.newSauce.getAcceptedSauce().users[0];
-
-    await page.newSauce
-      .getLoginPage()
-      .login(standardUser.username, standardUser.password);
-
-    await Positive.expectPositiveLogin(page, page.newSauce.getLoginPage());
-
-    await Positive.productsToAddInventory(
-      page,
-      page.newSauce.getInventoryPage(),
-      productsToAdd
-    );
-
-    await Positive.goToCartPage(page, page.newSauce.getCartPage());
-  });
-
-  // -------- 1️⃣ CHECKOUT STEP ONE ----------
-  test(" 1️⃣ Checkout Step One", async ({ page }) => {
-    const standardUser = page.newSauce.getAcceptedSauce().users[0];
-
-    await page.newSauce
-      .getLoginPage()
-      .login(standardUser.username, standardUser.password);
-
-    await Positive.expectPositiveLogin(page, page.newSauce.getLoginPage());
-
-    await Positive.productsToAddInventory(
-      page,
-      page.newSauce.getInventoryPage(),
-      productsToAdd
-    );
-
-    await Positive.goToCartPage(page, page.newSauce.getCartPage());
+    await Positive.productsToAddInventory(page, inventoryPage, productsToAdd);
+    await Positive.goToCartPage(page, cartPage);
 
     await Positive.checkOutStepOne(
       page,
-      page.newSauce.getStepOnePage(),
-      firstName,
-      lastName,
-      postalCode
-    );
-  });
-
-  // -------- 2️⃣ CHECKOUT STEP TWO ----------
-  test(" 2️⃣ Checkout Step Two", async ({ page }) => {
-    const standardUser = page.newSauce.getAcceptedSauce().users[0];
-
-    await page.newSauce
-      .getLoginPage()
-      .login(standardUser.username, standardUser.password);
-
-    await Positive.expectPositiveLogin(page, page.newSauce.getLoginPage());
-
-    await Positive.productsToAddInventory(
-      page,
-      page.newSauce.getInventoryPage(),
-      productsToAdd
-    );
-
-    await Positive.goToCartPage(page, page.newSauce.getCartPage());
-
-    await Positive.checkOutStepOne(
-      page,
-      page.newSauce.getStepOnePage(),
+      stepOnePage,
       firstName,
       lastName,
       postalCode
     );
 
-    await Positive.checkOutStepTwo(page, page.newSauce.getStepTwoPage());
-  });
+    await Positive.checkOutStepTwo(page, stepTwoPage);
 
-  // -------- 🏁 CHECKOUT COMPLETE ----------
-  test(" 🏁 Checkout Complete", async ({ page }) => {
-    const standardUser = page.newSauce.getAcceptedSauce().users[0];
-
-    await page.newSauce
-      .getLoginPage()
-      .login(standardUser.username, standardUser.password);
-
-    await Positive.expectPositiveLogin(page, page.newSauce.getLoginPage());
-
-    await Positive.productsToAddInventory(
-      page,
-      page.newSauce.getInventoryPage(),
-      productsToAdd
-    );
-
-    await Positive.goToCartPage(page, page.newSauce.getCartPage());
-
-    await Positive.checkOutStepOne(
-      page,
-      page.newSauce.getStepOnePage(),
-      firstName,
-      lastName,
-      postalCode
-    );
-
-    await Positive.checkOutStepTwo(page, page.newSauce.getStepTwoPage());
-
-    await Positive.checkOutComplete(page, page.newSauce.getCompletePage());
+    await Positive.checkOutComplete(page, completePage);
   });
 });
