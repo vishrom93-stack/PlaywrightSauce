@@ -1,14 +1,11 @@
 import { expect } from "@playwright/test";
-import { InventoryPage } from "../pages/InventoryPage.js";
 import { urls } from "../data/Urls.js";
 
-const inventory = new InventoryPage();
-
 // 1️⃣ Positive Login
-export async function expectPositiveLogin(page, loginPage) {
+export async function expectPositiveLogin(page, inventoryPage) {
   await expect(page).toHaveURL(urls.inventoryUrl);
-  await expect(page.locator(inventory.titleLocator)).toHaveText(
-    inventory.titleText
+  await expect(page.locator(inventoryPage.titleLocator)).toHaveText(
+    inventoryPage.titleText
   );
 }
 

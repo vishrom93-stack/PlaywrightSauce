@@ -7,12 +7,10 @@ export class CheckoutStepOnePage {
   lastName = '[data-test="lastName"]';
   postalCode = '[data-test="postalCode"]';
   continueButton = '[data-test="continue"]';
+  titleText = "Checkout: Your Information";
 
   constructor(page) {
     this.page = page;
-
- 
-    this.titleText = "Checkout: Your Information";
   }
   async openCheckoutStepOnePage() {
     await this.page.goto(urls.step1Url);
@@ -20,13 +18,13 @@ export class CheckoutStepOnePage {
 
   // ✍️ Fill out the Step One form
   async fillStepOneForm(first, last, postal) {
-    await this.page.fill(this.firstName, first);
-    await this.page.fill(this.lastName, last);
-    await this.page.fill(this.postalCode, postal);
+    await this.page.locator(this.firstName).fill(first);
+    await this.page.locator(this.lastName).fill(last);
+    await this.page.locator(this.postalCode).fill(postal);
   }
 
   // ➡️ Click the Continue button to move to Step Two
   async clickContinue() {
-    await this.page.click(this.continueButton);
+    await this.page.locator(this.continueButton).click();
   }
 }

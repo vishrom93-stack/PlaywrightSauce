@@ -40,7 +40,7 @@ test.describe("📝 Sanity Login Tests", () => {
     const standardUser = acceptedUsers.users[0];
 
     await loginPage.login(standardUser.username, standardUser.password);
-    await Positive.expectPositiveLogin(page, loginPage);
+    await Positive.expectPositiveLogin(page, inventoryPage);
 
     await Positive.productsToAddInventory(page, inventoryPage, productsToAdd);
     await Positive.goToCartPage(page, cartPage);

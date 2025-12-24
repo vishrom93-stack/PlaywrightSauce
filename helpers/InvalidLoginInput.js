@@ -1,10 +1,9 @@
-import { RejectedUsers } from "../data/RejectedUsers.js";
+import * as rejected from "../data/RejectMessage.js";
 import { AcceptedUsers } from "../data/AcceptedUsers.js";
 
 export class InvalidLoginInput {
   wrongUser = "wrong_user";
   constructor() {
-    const rejected = new RejectedUsers();
     const accepted = new AcceptedUsers();
 
     // 🔐 Locked-out user
@@ -27,7 +26,7 @@ export class InvalidLoginInput {
       this.emptyUsername,
       this.wrongUser,
     ];
-    
+
     // ------------------------------------
     // ⛔️ Build password array
     // ------------------------------------

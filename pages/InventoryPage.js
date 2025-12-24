@@ -1,28 +1,27 @@
-import { AcceptedUsers } from "../data/AcceptedUsers.js";
+import { urls } from "../data/Urls.js";
 export class InventoryPage {
   // 🏷️ Locators for inventory elements
   inventoryItem = ".inventory_item";
   inventoryItemName = ".inventory_item_name";
-  inventoryButton = ".btn_inventory";
+  addToCartButton = '[data-test^="add-to-cart"]';
   cartBadge = ".shopping_cart_badge";
+  titleLocator = '[data-test="title"]';
+  titleText = "Products";
 
   constructor(page) {
     this.page = page;
-    this.titleLocator = '[data-test="title"]';
-    this.titleText = "Products";
   }
-
 
   async openInventoryPage() {
-    await this.page.goto(AcceptedUsers().urls.inventoryUrl);
+    await this.page.goto(urls.inventoryUrl);
   }
 
-
   async addToCart(productName) {
-    const item = this.page.locator(
-      `${this.inventoryItem}:has(${this.inventoryItemName}:has-text("${productName}"))`
-    );
-
-    await item.locator(this.inventoryButton).click();
+    await this.page
+      .locator(
+        `${this.inventoryItem}:has(${this.inventoryItemName}:has-text("${productName}"))`
+      )
+      .locator(this.addToCartButton)
+      .click();
   }
 }

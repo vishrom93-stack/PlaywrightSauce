@@ -3,10 +3,11 @@ export class CheckoutStepTwoPage {
   // 🏷️ Locators for Step Two review page
   titleLocator = '[data-test="title"]';
   finishButton = '[data-test="finish"]';
+  titleText = "Checkout: Overview";
 
   constructor(page) {
     this.page = page;
-    this.titleText = "Checkout: Overview";
+    
   }
 
   async openCheckoutStepTwoPage() {
@@ -14,6 +15,6 @@ export class CheckoutStepTwoPage {
   }
 
   async finishCheckout() {
-    await this.page.click(this.finishButton);
+    await this.page.locator(this.finishButton).click();
   }
 }
