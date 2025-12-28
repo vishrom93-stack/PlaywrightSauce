@@ -3,12 +3,11 @@ import { LoginPage } from "../pages/LoginPage.js";
 import { InventoryPage } from "../pages/InventoryPage.js";
 import { AcceptedUsers } from "../data/AcceptedUsers.js";
 import * as rejected from "../data/RejectMessage.js";
-import { InvalidLoginInput } from "../helpers/InvalidLoginInput.js";
+import * as invalidLoginInput from "../helpers/InvalidLoginInput.js";
 import * as rejectedAttempts from "../helpers/RejectedAttempts.js";
 import { expectPositiveLogin } from "../helpers/positiveAssertions.js";
 
 const acceptedUsers = new AcceptedUsers();
-const invalidLoginInput = new InvalidLoginInput();
 
 test.describe("🌟 Positive(Valid) Login Tests 🔐", () => {
   test.beforeEach(async ({ page }) => {

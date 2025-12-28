@@ -1,39 +1,27 @@
 import * as rejected from "../data/RejectMessage.js";
 import { AcceptedUsers } from "../data/AcceptedUsers.js";
 
-export class InvalidLoginInput {
-  wrongUser = "wrong_user";
-  constructor() {
-    const accepted = new AcceptedUsers();
+let wrongUser = "wrong_user";
 
-    // 🔐 Locked-out user
-    this.lockedOutUser = rejected.lockedOutUser;
+// 🔐 Locked-out user
+const lockedOutUser = rejected.lockedOutUser;
 
-    // 🟩 Accepted user (valid username, but will be used for negative tests)
-    this.acceptedUser = accepted.users[0];
+// 🟩 Accepted user (valid username, but will be used for negative tests)
 
-    // ❌ Empty username case
-    this.emptyUsername = "";
+const acceptedUser = new AcceptedUsers().users[0];
 
-    // ❌ Empty password case
-    this.emptyPassword = "";
+// ❌ Empty username case
+const emptyUsername = "";
 
-    // ------------------------------------
-    // ⛔️ Build username array
-    // ------------------------------------
-    this.invalidUsernames = [
-      this.acceptedUser.username,
-      this.emptyUsername,
-      this.wrongUser,
-    ];
+// ❌ Empty password case
+const emptyPassword = "";
 
-    // ------------------------------------
-    // ⛔️ Build password array
-    // ------------------------------------
-    this.invalidPasswords = [
-      this.acceptedUser.password,
-      this.emptyPassword,
-      this.wrongUser,
-    ];
-  }
-}
+// ------------------------------------
+// ⛔️ Build username array
+// ------------------------------------
+export const invalidUsernames = [acceptedUser.username, emptyUsername, wrongUser];
+
+// ------------------------------------
+// ⛔️ Build password array
+// ------------------------------------
+export const invalidPasswords = [acceptedUser.password, emptyPassword, wrongUser];
