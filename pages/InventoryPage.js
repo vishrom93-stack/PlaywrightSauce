@@ -1,6 +1,7 @@
 import { urls } from "../data/Urls.js";
+import { expect } from "@playwright/test";
+
 export class InventoryPage {
-  // 🏷️ Locators for inventory elements
   inventoryItem = ".inventory_item";
   inventoryItemName = ".inventory_item_name";
   addToCartButton = '[data-test^="add-to-cart"]';
@@ -12,6 +13,12 @@ export class InventoryPage {
     this.page = page;
   }
 
+  async expectPositiveLogin() {
+    await expect(this.page).toHaveURL(urls.inventoryUrl);
+    await expect(this.page.locator(this.titleLocator)).toHaveText(
+      this.titleText
+    );
+  }
   async openInventoryPage() {
     await this.page.goto(urls.inventoryUrl);
   }
@@ -23,5 +30,11 @@ export class InventoryPage {
       )
       .locator(this.addToCartButton)
       .click();
+  }
+
+  async productsToAddInventory(products) {
+    for (const product of products) {
+      await this.addToCart(product);
+    }
   }
 }

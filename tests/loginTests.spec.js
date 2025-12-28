@@ -5,7 +5,7 @@ import { AcceptedUsers } from "../data/AcceptedUsers.js";
 import * as rejected from "../data/RejectMessage.js";
 import * as invalidLoginInput from "../helpers/InvalidLoginInput.js";
 import * as rejectedAttempts from "../helpers/RejectedAttempts.js";
-import { expectPositiveLogin } from "../helpers/positiveAssertions.js";
+//import { expectPositiveLogin } from "../helpers/positiveAssertions.js";
 
 const acceptedUsers = new AcceptedUsers();
 
@@ -22,12 +22,12 @@ test.describe("🌟 Positive(Valid) Login Tests 🔐", () => {
     page,
   }) => {
     await page.loginPage.login(standardUser.username, standardUser.password);
-    await expectPositiveLogin(page, page.inventoryPage);
+    await page.inventoryPage.expectPositiveLogin();
   });
   validUsers.forEach((user) => {
     test(`🙂🔓 Login test for user: ${user.username}`, async ({ page }) => {
       await page.loginPage.login(user.username, user.password);
-      await expectPositiveLogin(page, page.inventoryPage);
+      await page.inventoryPage.expectPositiveLogin();
     });
   });
 });

@@ -1,3 +1,4 @@
+import { expect } from "@playwright/test";
 import { urls } from "../data/Urls.js";
 
 export class CheckoutStepOnePage {
@@ -27,4 +28,17 @@ export class CheckoutStepOnePage {
   async clickContinue() {
     await this.page.locator(this.continueButton).click();
   }
+
+
+  async  checkOutStepOne(first, last, postal) {
+   await this.openCheckoutStepOnePage();
+    await expect(this.page).toHaveURL(urls.step1Url);
+    await expect(this.page.locator(this.titleLocator)).toHaveText(
+      this.titleText
+    );
+  
+    await this.fillStepOneForm(first, last, postal);
+    await this.clickContinue();
+  }
+  
 }
