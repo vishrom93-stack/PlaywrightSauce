@@ -31,4 +31,10 @@ export class InventoryPage {
       .locator(this.addToCartButton)
       .click();
   }
+  async expectCartBadgeCount(count) {
+    await expect(this.page.locator(this.cartBadge)).toBeVisible();
+    await expect(this.page.locator(this.cartBadge)).toHaveText(
+      count.toString()
+    );
+  }
 }

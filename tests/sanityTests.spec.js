@@ -20,56 +20,45 @@ const productsToAdd = ["Sauce Labs Backpack", "Sauce Labs Bike Light"];
 const acceptedUsers = new AcceptedUsers();
 
 test.describe("📝 Sanity Login Tests", () => {
-test.beforeEach(async ({ page }) => {
-const loginPage = new LoginPage(page);
-await loginPage.openLoginPage();
-});
+  test.beforeEach(async ({ page }) => {
+    const loginPage = new LoginPage(page);
+    await loginPage.openLoginPage();
+  });
 
-test("🔚🏁 End-to-End: Login → Checkout Complete 🛒", async ({ page }) => {
-// 🧱 Page Objects
-const loginPage = new LoginPage(page);
-const inventoryPage = new InventoryPage(page);
-const cartPage = new CartPage(page);
-const stepOnePage = new CheckoutStepOnePage(page);
-const stepTwoPage = new CheckoutStepTwoPage(page);
-const completePage = new CheckoutCompletePage(page);
+  test("🔚🏁 End-to-End: Login → Checkout Complete 🛒", async ({ page }) => {
+    // 🧱 Page Objects
+    const loginPage = new LoginPage(page);
+    const inventoryPage = new InventoryPage(page);
+    const cartPage = new CartPage(page);
+    const stepOnePage = new CheckoutStepOnePage(page);
+    const stepTwoPage = new CheckoutStepTwoPage(page);
+    const completePage = new CheckoutCompletePage(page);
 
+    const standardUser = acceptedUsers.users[0];
 
-const standardUser = acceptedUsers.users[0];
+    // 🔐 Login
+    await loginPage.login(standardUser.username, standardUser.password);
 
-// 🔐 Login
-await loginPage.login(
-  standardUser.username,
-  standardUser.password
-);
+    // ✅ Inventory page validation
+    await inventoryPage.expectPositiveLogin();
 
-// ✅ Inventory page validation
-await inventoryPage.expectPositiveLogin();
+    // 🛒 Add products
+    for (const product of productsToAdd) {
+      await inventoryPage.addToCart(product);
+    }
+    await inventoryPage.expectCartBadgeCount(productsToAdd.length);
 
-// 🛒 Add products
-//await inventoryPage.productsToAddInventory(productsToAdd)
-for (const product of productsToAdd) {
-  await inventoryPage.addToCart(product);
-}
+    // 🛍️ Cart
+    await cartPage.openCartPage();
+    await cartPage.clickCheckout();
 
+    // 📝 Checkout
+    await stepOnePage.fillStepOneForm(firstName, lastName, postalCode);
+    await stepOnePage.clickContinue();
 
-// 🛍️ Cart
-await cartPage.openCartPage();
-await cartPage.clickCheckout();
+    await stepTwoPage.finishCheckout();
 
-// 📝 Checkout
-await stepOnePage.fillStepOneForm(
-  firstName,
-  lastName,
-  postalCode
-);
-await stepOnePage.clickContinue();
-
-await stepTwoPage.finishCheckout();
-
-// 🎉 Complete
-await completePage.expectCheckoutComplete();
-
-
-});
+    // 🎉 Complete
+    await completePage.expectCheckoutComplete();
+  });
 });
