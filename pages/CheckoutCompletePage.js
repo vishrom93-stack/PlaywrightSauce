@@ -13,12 +13,11 @@ export class CheckoutCompletePage {
   }
 
   async expectCheckoutComplete() {
+    await this.openCheckoutCompletePage();
     await expect(this.page).toHaveURL(urls.completeUrl);
     await expect(this.page.locator(this.titleLocator)).toHaveText(
       this.titleText
     );
-
-    await this.openCheckoutCompletePage();
     await expect(this.page.locator(this.thankYouHeader)).toBeVisible();
     await expect(this.page.locator(this.thankYouHeader)).toHaveText(
       this.greeting

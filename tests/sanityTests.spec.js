@@ -49,14 +49,14 @@ test.describe("📝 Sanity Login Tests", () => {
     await inventoryPage.expectCartBadgeCount(productsToAdd.length);
 
     // 🛍️ Cart
-    await cartPage.openCartPage();
+    await cartPage.goToCartPage();
     await cartPage.clickCheckout();
 
     // 📝 Checkout
-    await stepOnePage.fillStepOneForm(firstName, lastName, postalCode);
+    await stepOnePage.checkOutStepOne(firstName, lastName, postalCode);
     await stepOnePage.clickContinue();
 
-    await stepTwoPage.finishCheckout();
+    await stepTwoPage.checkOutStepTwo();
 
     // 🎉 Complete
     await completePage.expectCheckoutComplete();
