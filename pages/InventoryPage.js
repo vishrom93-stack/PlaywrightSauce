@@ -31,10 +31,4 @@ export class InventoryPage {
       .locator(this.addToCartButton)
       .click();
   }
-
-  async productsToAddInventory(products) {
-    for (const product of products) {
-      await this.addToCart(product);
-    }
-  }
 }

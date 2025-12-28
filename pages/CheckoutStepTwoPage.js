@@ -8,12 +8,8 @@ export class CheckoutStepTwoPage {
 
   constructor(page) {
     this.page = page;
-    
   }
 
-  async openCheckoutStepTwoPage() {
-    await this.page.goto(urls.step2Url);
-  }
   async openCheckoutStepTwoPage() {
     await this.page.goto(urls.step2Url);
   }
@@ -22,7 +18,7 @@ export class CheckoutStepTwoPage {
     await this.page.locator(this.finishButton).click();
   }
 
-  async  checkOutStepTwo() {
+  async checkOutStepTwo() {
     await this.openCheckoutStepTwoPage();
     await expect(this.page).toHaveURL(urls.step2Url);
     await expect(this.page.locator(this.titleLocator)).toHaveText(

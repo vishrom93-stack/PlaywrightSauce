@@ -47,7 +47,11 @@ await loginPage.login(
 await inventoryPage.expectPositiveLogin();
 
 // 🛒 Add products
-await inventoryPage.productsToAddInventory(productsToAdd);
+//await inventoryPage.productsToAddInventory(productsToAdd)
+for (const product of productsToAdd) {
+  await inventoryPage.addToCart(product);
+}
+
 
 // 🛍️ Cart
 await cartPage.openCartPage();
