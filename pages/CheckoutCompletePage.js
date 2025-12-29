@@ -1,30 +1,28 @@
-import { urls } from "../data/Urls.js";
-import { expect } from "@playwright/test";
+import {expect} from '@playwright/test'
+import {URLS} from '../data/urls.js'
 
 export class CheckoutCompletePage {
-  titleLocator = '[data-test="title"]';
-  thankYouHeader = ".complete-header";
-  thankYouText = ".complete-text";
-  titleText = "Checkout: Complete!";
-  greeting = "Thank you for your order!";
+  titleLocator = '[data-test="title"]'
+  thankYouHeader = '.complete-header'
+  thankYouText = '.complete-text'
 
   constructor(page) {
-    this.page = page;
+    this.page = page
   }
 
   async expectCheckoutComplete() {
-    await this.openCheckoutCompletePage();
-    await expect(this.page).toHaveURL(urls.completeUrl);
+    await this.openCheckoutCompletePage()
+    await expect(this.page).toHaveURL(URLS.completeUrl)
     await expect(this.page.locator(this.titleLocator)).toHaveText(
-      this.titleText
-    );
-    await expect(this.page.locator(this.thankYouHeader)).toBeVisible();
+      'Checkout: Complete!',
+    )
+    await expect(this.page.locator(this.thankYouHeader)).toBeVisible()
     await expect(this.page.locator(this.thankYouHeader)).toHaveText(
-      this.greeting
-    );
+      'Thank you for your order!',
+    )
   }
 
   async openCheckoutCompletePage() {
-    await this.page.goto(urls.completeUrl);
+    await this.page.goto(URLS.completeUrl)
   }
 }
