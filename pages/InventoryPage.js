@@ -1,46 +1,36 @@
-import { urls } from "../data/Urls.js";
-import { expect } from "@playwright/test";
+import {expect} from '@playwright/test'
+import {URLS} from '../data/urls'
 
 export class InventoryPage {
-  // 🔹 Locators
-  cartBadge = ".shopping_cart_badge";
-  titleLocator = '[data-test="title"]';
-  titleText = "Products";
+  cartBadge = '.shopping_cart_badge'
+  titleLocator = '[data-test="title"]'
+  addToCartById = (id) => `[id="add-to-cart-${id}"]`
 
   constructor(page) {
-    this.page = page;
+    this.page = page
   }
 
-  // ✅ Positive login assertion
-  async expectPositiveLogin() {
-    await expect(this.page).toHaveURL(urls.inventoryUrl);
-    await expect(this.page.locator(this.titleLocator)).toHaveText(
-      this.titleText
-    );
+  async assertSuccessfulLogin() {
+    await expect(this.page).toHaveURL(URLS.inventoryUrl)
+    await expect(this.page.locator(this.titleLocator)).toHaveText('Products')
   }
 
-  // 🌐 Open inventory page
   async openInventoryPage() {
-    await this.page.goto(urls.inventoryUrl);
+    await this.page.goto(URLS.inventoryUrl)
   }
 
-  // 🔄 Convert product name → SauceDemo ID format
   productNameToId(productName) {
-    // "Sauce Labs Backpack" → "sauce-labs-backpack"
-    return productName.toLowerCase().replace(/ /g, "-"); // / /g- Find every space in the text & Replace spaces with hyphens (-)
+    return productName.toLowerCase().replace(/ /g, '-') // / /g- Find every space in the text & Replace spaces with hyphens (-)
   }
 
-  // 🛒 Add product to cart (ID-based, universal)
   async addToCart(productName) {
-    const productId = this.productNameToId(productName);
-    await this.page.locator(`[id="add-to-cart-${productId}"]`).click();
+    const productId = this.productNameToId(productName)
+    const selector = this.addToCartById(productId)
+    await this.page.locator(selector).click()
   }
 
-  // 🔢 Cart badge count assertion
   async expectCartBadgeCount(count) {
-    await expect(this.page.locator(this.cartBadge)).toBeVisible();
-    await expect(this.page.locator(this.cartBadge)).toHaveText(
-      count.toString()
-    );
+    await expect(this.page.locator(this.cartBadge)).toBeVisible()
+    await expect(this.page.locator(this.cartBadge)).toHaveText(count.toString())
   }
 }

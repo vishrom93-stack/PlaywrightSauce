@@ -1,29 +1,28 @@
-import { expect } from "@playwright/test";
-import { urls } from "../data/Urls.js";
+import {expect} from '@playwright/test'
+import {URLS} from '../data/urls.js'
+
 export class CheckoutStepTwoPage {
-  // 🏷️ Locators for Step Two review page
-  titleLocator = '[data-test="title"]';
-  finishButton = '[data-test="finish"]';
-  titleText = "Checkout: Overview";
+  titleLocator = '[data-test="title"]'
+  finishButton = '[data-test="finish"]'
 
   constructor(page) {
-    this.page = page;
+    this.page = page
   }
 
   async openCheckoutStepTwoPage() {
-    await this.page.goto(urls.step2Url);
+    await this.page.goto(URLS.step2Url)
   }
 
   async finishCheckout() {
-    await this.page.locator(this.finishButton).click();
+    await this.page.locator(this.finishButton).click()
   }
 
   async checkOutStepTwo() {
-    await this.openCheckoutStepTwoPage();
-    await expect(this.page).toHaveURL(urls.step2Url);
+    await this.openCheckoutStepTwoPage()
+    await expect(this.page).toHaveURL(URLS.step2Url)
     await expect(this.page.locator(this.titleLocator)).toHaveText(
-      this.titleText
-    );
-    await this.finishCheckout();
+      'Checkout: Overview',
+    )
+    await this.finishCheckout()
   }
 }
